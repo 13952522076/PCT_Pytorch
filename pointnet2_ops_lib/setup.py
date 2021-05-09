@@ -34,7 +34,7 @@ setup(
                 "cxx": ["-O3"],
                 "nvcc": ["-O3", "-Xfatbin", "-compress-all"],
             },
-            include_dirs=[osp.join(this_dir, _ext_src_root, "include")],
+            # include_dirs=[osp.join(this_dir, _ext_src_root, "include")],
         )
     ],
     cmdclass={"build_ext": BuildExtension},
