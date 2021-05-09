@@ -17,6 +17,7 @@ requirements = ["torch>=1.4"]
 exec(open(osp.join("pointnet2_ops", "_version.py")).read())
 
 os.environ["TORCH_CUDA_ARCH_LIST"] = "3.7+PTX;5.0;6.0;6.1;6.2;7.0;7.5"
+include_dirs = [os.path.realpath('../include'), '/usr/local/cuda/targets/x86_64-linux/include/']
 setup(
     name="pointnet2_ops",
     version=__version__,
@@ -27,6 +28,7 @@ setup(
         CUDAExtension(
             name="pointnet2_ops._ext",
             sources=_ext_sources,
+            include_dirs=include_dirs,
             extra_compile_args={
                 "cxx": ["-O3"],
                 "nvcc": ["-O3", "-Xfatbin", "-compress-all"],
