@@ -17,13 +17,14 @@ requirements = ["torch>=1.4"]
 exec(open(osp.join("pointnet2_ops", "_version.py")).read())
 
 os.environ["TORCH_CUDA_ARCH_LIST"] = "3.7+PTX;5.0;6.0;6.1;6.2;7.0;7.5"
-include_dirs = [os.path.realpath('../include'), '/usr/local/cuda/targets/x86_64-linux/include/']
+
 setup(
     name="pointnet2_ops",
     version=__version__,
     author="Erik Wijmans",
     packages=find_packages(),
     install_requires=requirements,
+    include_dirs = [os.path.realpath('../include'), '/usr/local/cuda/targets/x86_64-linux/include/'],
     ext_modules=[
         CUDAExtension(
             name="pointnet2_ops._ext",
