@@ -24,17 +24,16 @@ setup(
     author="Erik Wijmans",
     packages=find_packages(),
     install_requires=requirements,
-    include_dirs = [os.path.realpath('../include'), '/usr/local/cuda/targets/x86_64-linux/include/'],
+    
     ext_modules=[
         CUDAExtension(
             name="pointnet2_ops._ext",
             sources=_ext_sources,
-            include_dirs=include_dirs,
             extra_compile_args={
                 "cxx": ["-O3"],
                 "nvcc": ["-O3", "-Xfatbin", "-compress-all"],
             },
-            # include_dirs=[osp.join(this_dir, _ext_src_root, "include")],
+            include_dirs=[os.path.realpath('../include'), '/usr/local/cuda/targets/x86_64-linux/include/'],
         )
     ],
     cmdclass={"build_ext": BuildExtension},
