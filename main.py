@@ -195,6 +195,8 @@ if __name__ == "__main__":
                         help='Pretrained model path')
     args = parser.parse_args()
 
+    os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
+
     _init_()
 
     io = IOStream('checkpoints/' + args.exp_name + '/run.log')

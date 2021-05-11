@@ -3,6 +3,7 @@ import glob
 import h5py
 import numpy as np
 from torch.utils.data import Dataset
+os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 
 def download():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
