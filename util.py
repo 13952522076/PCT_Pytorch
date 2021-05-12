@@ -1,6 +1,6 @@
 import torch
 import torch.nn.functional as F
-from torch_cluster import fps
+# from torch_cluster import fps
 # from pointnet2_ops import pointnet2_utils
 
 def farthest_point_sample(xyz, npoint):
@@ -12,7 +12,7 @@ def farthest_point_sample(xyz, npoint):
         centroids: sampled pointcloud index, [B, npoint]
     """
 
-    """
+
     # previous implementation
     device = xyz.device
     B, N, C = xyz.shape
@@ -27,19 +27,19 @@ def farthest_point_sample(xyz, npoint):
         distance = torch.min(distance, dist)
         farthest = torch.max(distance, -1)[1]
     return centroids
-    """
 
-    device = xyz.device
-    B, N, C = xyz.shape
-    ratio = npoint/float(N)
-    output = []
-    for i in range(B):
-        src = xyz[i,:,:]
-        batch = torch.zeros(N, dtype=torch.long, device=device)
-        item = fps(src,batch=batch, ratio=ratio, random_start=False)
-        output.append(item.unsqueeze(dim=0))
-    output = torch.cat(output,dim=0)
-    return output
+
+    # device = xyz.device
+    # B, N, C = xyz.shape
+    # ratio = npoint/float(N)
+    # output = []
+    # for i in range(B):
+    #     src = xyz[i,:,:]
+    #     batch = torch.zeros(N, dtype=torch.long, device=device)
+    #     item = fps(src,batch=batch, ratio=ratio, random_start=False)
+    #     output.append(item.unsqueeze(dim=0))
+    # output = torch.cat(output,dim=0)
+    # return output
 
 
 
