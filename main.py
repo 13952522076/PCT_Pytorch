@@ -135,7 +135,7 @@ def test(args, io):
                             batch_size=args.test_batch_size, shuffle=True, drop_last=False)
 
     device = torch.device("cuda" if args.cuda else "cpu")
-
+    print(f"buidling model...")
     model = Pct(args).to(device)
     model = nn.DataParallel(model) 
     
@@ -143,7 +143,7 @@ def test(args, io):
     model = model.eval()
     test_true = []
     test_pred = []
-
+    print(f"starting test...")
     for data, label in tqdm(test_loader):
         data, label = data.to(device), label.to(device).squeeze()
         data = data.permute(0, 2, 1)
