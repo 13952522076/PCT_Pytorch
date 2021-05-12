@@ -25,7 +25,7 @@ def load_data(partition):
     all_label = []
     for h5_name in glob.glob(os.path.join(DATA_DIR, 'modelnet40_ply_hdf5_2048', 'ply_data_%s*.h5'%partition)):
         # print(f"h5_name: {h5_name}")
-        f = h5py.File(h5_name)
+        f = h5py.File(h5_name,'r+')
         data = f['data'][:].astype('float32')
         label = f['label'][:].astype('int64')
         f.close()
