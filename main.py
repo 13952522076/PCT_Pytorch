@@ -137,9 +137,11 @@ def test(args, io):
     device = torch.device("cuda" if args.cuda else "cpu")
     print(f"buidling model...")
     model = Pct(args).to(device)
-    model = nn.DataParallel(model) 
-    
+    print(f"buidling model2...")
+    model = nn.DataParallel(model)
+    print(f"buidling model3...")
     model.load_state_dict(torch.load(args.model_path))
+    print(f"buidling model4...")
     model = model.eval()
     test_true = []
     test_pred = []
