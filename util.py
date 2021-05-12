@@ -144,7 +144,7 @@ def sample_and_group(npoint, radius, nsample, xyz, points):
     B, N, C = xyz.shape
     S = npoint
     xyz = xyz.contiguous()
-
+    print(f"xyz shape is {xyz.shape}")
     fps_idx = farthest_point_sample(xyz, npoint).long() # [B, npoint]
     new_xyz = index_points(xyz, fps_idx) 
     new_points = index_points(points, fps_idx)
