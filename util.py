@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as F
+from torch_cluster import fps
 # from pointnet2_ops import pointnet2_utils
 
 def farthest_point_sample(xyz, npoint):
@@ -10,6 +11,9 @@ def farthest_point_sample(xyz, npoint):
     Return:
         centroids: sampled pointcloud index, [B, npoint]
     """
+
+    """
+    # previous implementation
     device = xyz.device
     B, N, C = xyz.shape
     centroids = torch.zeros(B, npoint, dtype=torch.long).to(device)
@@ -23,6 +27,21 @@ def farthest_point_sample(xyz, npoint):
         distance = torch.min(distance, dist)
         farthest = torch.max(distance, -1)[1]
     return centroids
+    """
+
+    device = xyz.device
+    B, N, C = xyz.shape
+    ratio = npoint/float(N)
+    output = []
+    for i in range(B):
+        src = xyz[i,:,:]
+        batch = torch.zeros(N, dtype=torch.long, device=device)
+        item = fps(src,batch=batch, ratio=ratio, random_start=False)
+        output.append(item.unsqueeze(dim=0))
+    output = torch.cat(output,dim=0)
+    return output
+
+
 
 def cal_loss(pred, gold, smoothing=True):
     ''' Calculate cross entropy loss, apply label smoothing if needed. '''
@@ -158,3 +177,22 @@ def sample_and_group(npoint, radius, nsample, xyz, points):
     grouped_points_norm = grouped_points - new_points.view(B, S, 1, -1)
     new_points = torch.cat([grouped_points_norm, new_points.view(B, S, 1, -1).repeat(1, 1, nsample, 1)], dim=-1)
     return new_xyz, new_points
+
+
+if __name__ == "__main__":
+    # b,n,d=8,100,3
+    # x = torch.rand(b,n,d)
+    # print(x.shape)
+    # x = x.view(-1,d)
+    # batch = torch.arange(0,n).unsqueeze(dim=-1).expand(n,b).long()
+    # index = fps(x, batch=batch, ratio=0.5, random_start=False)
+    # index = index.view(b,-1)
+    # print(index)
+    # print(index.shape)
+
+
+    b,n,d=8,100,3
+    s=50
+    x = torch.rand(b,n,d)
+    farthest_point_sample(x, s)
+
