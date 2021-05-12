@@ -11,6 +11,7 @@ import numpy as np
 from torch.utils.data import DataLoader
 from util import cal_loss, IOStream
 import sklearn.metrics as metrics
+from tqdm import tqdm
 
 import time 
 
@@ -143,7 +144,7 @@ def test(args, io):
     test_true = []
     test_pred = []
 
-    for data, label in test_loader:
+    for data, label in tqdm(test_loader):
         data, label = data.to(device), label.to(device).squeeze()
         data = data.permute(0, 2, 1)
         logits = model(data)
